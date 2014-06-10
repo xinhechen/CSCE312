@@ -80,14 +80,14 @@ bool lessthan(bool input1[8], bool input2[8]) //(return 0 if false)
     bool* sub=new bool[8];
     subu(sub,input1,input2);
     bool sign=sub[0];
-    return Or(sign,equal(input1,input2));
+    return And(sign,Not(equal(input1,input2)));
 }
 bool greaterthan(bool input1[8], bool input2[8]) //(return 0 if false)
 {
     bool* sub=new bool[8];
     subu(sub,input1,input2);
     bool opposite=Not(sub[0]);
-    return Or(opposite,equal(input1,input2));
+    return And(opposite,Not(equal(input1,input2)));
 }
 bool* equal(bool* output, bool input1[8], bool input2[8])// (return 11111111 if two values are the same)
 {
@@ -156,12 +156,12 @@ bool* shiftLeft(bool* output, bool input[8])
     output[4]=input[5];
     output[5]=input[6];
     output[6]=input[7];
-    output[7]='0';
+    output[7]=false;
     return output;
 }
 bool* shiftRight(bool* output, bool input[8])
 {
-    output[0]='0';
+    output[0]=false;
     output[1]=input[0];
     output[2]=input[1];
     output[3]=input[2];
