@@ -1,6 +1,6 @@
-
+#include "basic_functions.h"
 #include "p2.h"
-#include "p1.cpp"
+#include "p1.h"
 bool* mux(bool* output, bool operation, bool input1[8], bool input2[8])
 {
     output[0]=Mux(operation,input1[0],input2[0]);
@@ -32,7 +32,7 @@ bool* addu(bool* output, bool input1[8], bool input2[8])
     output[0]=Sum(input1[0],input2[0],carryout);
     return output;
 }
-bool* negate(bool* output, bool input[8])
+bool* negateb(bool* output, bool input[8])
 {
     bool temp[8];
     temp[0]=Not(input[0]);
@@ -58,7 +58,7 @@ bool* negate(bool* output, bool input[8])
 bool* subu(bool* output, bool input1[8], bool input2[8])
 {
     bool* negb=new bool[8];
-    negate(negb,input2);
+    negateb(negb,input2);
     addu(output,input1,negb);
     return output;
 }
@@ -93,7 +93,7 @@ bool* equal(bool* output, bool input1[8], bool input2[8])// (return 11111111 if 
 {
     bool* sub=new bool[8];
     subu(sub,input1,input2);
-    negate(output,sub);
+    negateb(output,sub);
     return output;
 }
 bool* lessthan(bool* output, bool input1[8], bool input2[8]) //(return 00000000 if false)
