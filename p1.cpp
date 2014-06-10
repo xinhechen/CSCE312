@@ -1,10 +1,17 @@
 #include <iostream>
 #include "p1.h"
-#include "p2.h"
 #include "basic_functions.h"
 
 using namespace std;
-        
+     bool XOR(bool a, bool b)
+{
+    bool na=Not(a);
+    bool nb=Not(b);
+    bool nab=And(na,b);
+    bool nba=And(nb,a);
+    bool ans=Or(nab,nba);
+    return ans;
+}   
     bool Mux(bool operation, bool output_if_true, bool output_if_false)
     {
         bool no=Not(operation);
@@ -37,5 +44,7 @@ using namespace std;
     {
         return Not(XOR(a,b));
     }
+    
+
     
     
