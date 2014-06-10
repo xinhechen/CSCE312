@@ -16,7 +16,7 @@
 // Or integrate the files into your IDE, if you use any.
 //
 // To run it, under commandline, type in:
-//   $ ./312_a1_test
+//   $ ./a1_test
 //
 // The program will print test cases that were failed, and print Done before
 // exit.
@@ -144,9 +144,12 @@ test_case(p2, mux) {
 }
 
 test_case(p2, addu) {
-    bool a[8] = { T, T, F, T, F, F, F, F };
-    bool b[8] = { T, F, F, T, T, T, T, T };
-    bool s[8] = { F, F, T, F, F, F, F, F };
+    //bool a[8] = { T, T, F, T, F, F, F, F };
+    bool a[8] = { F,F,F,F,T,F,T,T };
+    //bool b[8] = { T, F, F, T, T, T, T, T };
+    bool b[8] = { T,T,T,T,T,F,F,T };
+    //bool s[8] = { F, F, T, F, F, F, F, F };
+    bool s[8] = { F, F, F, F, F, T, F, F };
     
     bool output[8];
     addu(output, a, b);
@@ -154,32 +157,40 @@ test_case(p2, addu) {
 }
 
 test_case(p2, negate) {
-    bool a1[8] = { T, T, F, T, F, F, F, F };
-    bool b1[8] = { T, F, T, F, T, T, T, T };
+    //bool a1[8] = { T, T, F, T, F, F, F, F };
+    bool a1[8] = { F,F,F,F,T,F,T,T };
+    //bool b1[8] = { T, F, T, F, T, T, T, T };
+    bool b1[8] = { T,T,T,T,F,T,F,T };
     bool output1[8];
     negateb(output1, a1);
     assert_equal8(b1, output1);
     
-    bool a2[8] = { T, F, F, T, T, T, T, T };
-    bool b2[8] = { T, T, T, F, F, F, F, F };
+    //bool a2[8] = { T, F, F, T, T, T, T, T };
+    bool a2[8] = { T,T,T,T,T,F,F,T };
+    //bool b2[8] = { T, T, T, F, F, F, F, F };
+    bool b2[8] = { F,F,F,F,F,T,T,T };
     bool output2[8];
     negateb(output2, a2);
     assert_equal8(b2, output2);
 }
 
 test_case(p2, subu) {
-    bool a[8] = { T, T, F, T, F, F, F, F }; // 11
-    bool b[8] = { T, F, F, T, T, T, T, T }; // -7
-    bool d[8] = { F, T, F, F, T, F, F, F }; // 18
-    
+    //bool a[8] = { T, T, F, T, F, F, F, F }; // 11
+    bool a[8] = { F,F,F,F,T,F,T,T };
+    //bool b[8] = { T, F, F, T, T, T, T, T }; // -7
+    bool b[8] = { T,T,T,T,T,F,F,T};
+    //bool d[8] = { F, T, F, F, T, F, F, F }; // 18
+    bool d[8] = { F,F,F,T,F,F,T,F };
     bool output[8];
     subu(output, a, b);
     assert_equal8(d, output);
 }
 
 test_case(p2, equal) {
-    bool a[8] = { T, T, F, T, F, F, F, F }; // 11
-    bool b[8] = { T, F, F, T, T, T, T, T }; // -7
+    //bool a[8] = { T, T, F, T, F, F, F, F }; // 11
+    bool a[8] = { F,F,F,F,T,F,T,T };
+    //bool b[8] = { T, F, F, T, T, T, T, T }; // -7
+    bool b[8] = { T,T,T,T,T,F,F,T};
     
     assert_true(equal(a, a));
     assert_true(equal(b, b));
@@ -188,8 +199,10 @@ test_case(p2, equal) {
 }
 
 test_case(p2, lessthan) {
-    bool a[8] = { T, T, F, T, F, F, F, F }; // 11
-    bool b[8] = { F, F, F, T, T, F, F, F }; // 24
+    //bool a[8] = { T, T, F, T, F, F, F, F }; // 11
+    bool a[8] = { F,F,F,F,T,F,T,T };
+    //bool b[8] = { F, F, F, T, T, F, F, F }; // 24
+    bool b[8] = { F, F, F, T, T, F, F, F };
     
     assert_true(lessthan(a, b));
     assert_false(lessthan(b, a));
@@ -197,8 +210,10 @@ test_case(p2, lessthan) {
 }
 
 test_case(p2, greaterthan) {
-    bool a[8] = { T, T, F, T, F, F, F, F }; // 11
-    bool b[8] = { F, F, F, T, T, F, F, F }; // 24
+    //bool a[8] = { T, T, F, T, F, F, F, F }; // 11
+    bool a[8] = { F,F,F,F,T,F,T,T };
+    //bool b[8] = { F, F, F, T, T, F, F, F }; // 24
+    bool b[8] = { F, F, F, T, T, F, F, F };
     
     assert_false(greaterthan(a, b));
     assert_true(greaterthan(b, a));
@@ -206,9 +221,12 @@ test_case(p2, greaterthan) {
 }
 
 test_case(p2, and8) {
-    bool a[8] = { T, T, F, T, F, F, F, F };
+    //bool a[8] = { T, T, F, T, F, F, F, F };
+    bool a[8] = { F,F,F,F,T,F,T,T };
+    //bool b[8] = { F, F, F, T, T, F, F, F };
     bool b[8] = { F, F, F, T, T, F, F, F };
-    bool result[8] = { F, F, F, T, F, F, F, F };
+    //bool result[8] = { F, F, F, T, F, F, F, F };
+    bool result[8] = { F,F,F,F,T,F,F,F};
     
     bool output[8];
     and8(output, a, b);
@@ -216,9 +234,11 @@ test_case(p2, and8) {
 }
 
 test_case(p2, or8) {
-    bool a[8] = { T, T, F, T, F, F, F, F };
+    //bool a[8] = { T, T, F, T, F, F, F, F };
+    bool a[8] = { F,F,F,F,T,F,T,T };
     bool b[8] = { F, F, F, T, T, F, F, F };
-    bool result[8] = { T, T, F, T, T, F, F, F };
+    //bool result[8] = { T, T, F, T, T, F, F, F };
+    bool result[8] = { F,F,F,T,T,F,T,T};
     
     bool output[8];
     or8(output, a, b);
@@ -226,8 +246,10 @@ test_case(p2, or8) {
 }
 
 test_case(p2, shiftLeft) {
-    bool a[8] = { T, T, F, T, F, F, F, F };
-    bool b[8] = { F, T, T, F, T, F, F, F };
+    //bool a[8] = { T, T, F, T, F, F, F, F };
+    bool a[8] = { F,F,F,F,T,F,T,T };
+    //bool b[8] = { F, T, T, F, T, F, F, F };
+    bool b[8] = { F,F,F,T,F,T,T,F};
     
     bool output[8];
     shiftLeft(output, a);
@@ -235,8 +257,10 @@ test_case(p2, shiftLeft) {
 }
 
 test_case(p2, shiftRight) {
-    bool a[8] = { T, T, F, T, F, F, F, F };
-    bool b[8] = { T, F, T, F, F, F, F, F };
+    //bool a[8] = { T, T, F, T, F, F, F, F };
+    bool a[8] = { F,F,F,F,T,F,T,T };
+    //bool b[8] = { T, F, T, F, F, F, F, F };
+    bool b[8] = { F,F,F,F,F,T,F,T};
     
     bool output[8];
     shiftRight(output, a);
