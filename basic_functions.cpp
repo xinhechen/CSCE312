@@ -34,15 +34,7 @@ void resetFunctionCount()
     functionCount=0;
 }
 
-bool XOR(bool a, bool b)
-{
-    bool na=Not(a);
-    bool nb=Not(b);
-    bool nab=And(na,b);
-    bool nba=And(nb,a);
-    bool ans=Or(nab,nba);
-    return ans;
-}
+
 
 bool getValue(bool byte[8], int offset)
 {
@@ -65,4 +57,3 @@ void printValueInDecimal(bool byte[8])
     int value=1*byte[7]+2*byte[6]+4*byte[5]+8*byte[4]+16*byte[3]+32*byte[2]+64*byte[1]+128*byte[0];
     cout<<"the value in decimal is "<<value<<"\n";
 }
-
