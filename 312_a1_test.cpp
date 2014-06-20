@@ -1,48 +1,15 @@
-// 312 Assignment 1 Test Program.
-// TA: Yin Qu (me.yin.qu@gmail.com)
-//
-// Please re-organize your code into three CPP files:
-//   basic_functions.cpp
-//   p1.cpp
-//   p2.cpp
-//
-// For each CPP file, see the corresponding header file for function bodies you
-// need to include.
-//
-// This program tests all required functions with test cases.
-//
-// To compile it, under commandline, type in:
-//   $ make
-// Or integrate the files into your IDE, if you use any.
-//
-// To run it, under commandline, type in:
-//   $ ./a1_test
-//
-// The program will print test cases that were failed, and print Done before
-// exit.
 
 #include <iostream>
-#include "simple_test.h"
 #include "basic_functions.h"
 #include "p1.h"
 #include "p2.h"
+#include "simple_test.h"
+#include "test_utils.h"
 
 extern int functionCount;
 
 #define T true
 #define F false
-
-bool bitwise_equal8(bool byte1[8], bool byte2[8]) {
-    for (int i = 0; i < 8; ++i) {
-        if (byte1[i] != byte2[i]) {
-            return false;
-        }
-    }
-    return true;
-}
-
-#define assert_equal8(expected, actual) \
-assert_true(bitwise_equal8(expected, actual))
 
 test_case(basic_functions, And) {
     assert_eq(F, And(F, F));
@@ -118,80 +85,77 @@ test_case(p1, Equal) {
 }
 
 test_case(p2, getValue) {
-    bool byte[8] = { T, F, T, F, T, F, T, F };
-    assert_eq(T, getValue(byte, 0));
-    assert_eq(F, getValue(byte, 1));
+    bool a[8];
+    str_to_bits8(a, "10101010");
+    assert_eq(F, getValue(a, 0));
+    assert_eq(T, getValue(a, 1));
 }
 
 test_case(p2, writeValue) {
-    bool a[8] = { F, F, F, F, F, F, F, F };
-    bool b[8] = { F, F, F, F, T, F, F, F };
-    bool byte[8] = { F, F, F, F, F, F, F, F };
-    writeValue(byte, 4, T);
-    assert_equal8(b, byte);
-    writeValue(byte, 4, F);
-    assert_equal8(a, byte);
+    bool a[8], b[8], c[8];
+    
+    str_to_bits8(a, "00000000");
+    str_to_bits8(b, "00010000");
+    str_to_bits8(c, "00000000");
+    writeValue(c, 4, T);
+    assert_eq8(b, c);
+    writeValue(c, 4, F);
+    assert_eq8(a, c);
 }
 
 test_case(p2, mux) {
-    bool a[8] = { F, F, F, F, F, F, F, F };
-    bool b[8] = { T, T, T, T, T, T, T, T };
-    bool output[8];
-    mux(output, T, a, b);
-    assert_equal8(a, output);
-    mux(output, F, a, b);
-    assert_equal8(b, output);
+    bool a[8], b[8], c[8];
+    
+    str_to_bits8(a, "00000000");
+    str_to_bits8(b, "11111111");
+    mux(c, T, a, b);
+    assert_eq8(a, c);
+    mux(c, F, a, b);
+    assert_eq8(b, c);
 }
 
 test_case(p2, addu) {
-    //bool a[8] = { T, T, F, T, F, F, F, F };
-    bool a[8] = { F,F,F,F,T,F,T,T };
-    //bool b[8] = { T, F, F, T, T, T, T, T };
-    bool b[8] = { T,T,T,T,T,F,F,T };
-    //bool s[8] = { F, F, T, F, F, F, F, F };
-    bool s[8] = { F, F, F, F, F, T, F, F };
-    
+    bool a[8], b[8], c[8];
     bool output[8];
+    
+    to_bits8(a, 11);
+    to_bits8(b, 7);
+    to_bits8(c, 18);
     addu(output, a, b);
-    assert_equal8(s, output);
+    assert_eq8(c, output);
 }
 
 test_case(p2, negate) {
-    //bool a1[8] = { T, T, F, T, F, F, F, F };
-    bool a1[8] = { F,F,F,F,T,F,T,T };
-    //bool b1[8] = { T, F, T, F, T, T, T, T };
-    bool b1[8] = { T,T,T,T,F,T,F,T };
-    bool output1[8];
-    negateb(output1, a1);
-    assert_equal8(b1, output1);
+    bool a[8], c[8];
+    bool output[8];
     
-    //bool a2[8] = { T, F, F, T, T, T, T, T };
-    bool a2[8] = { T,T,T,T,T,F,F,T };
-    //bool b2[8] = { T, T, T, F, F, F, F, F };
-    bool b2[8] = { F,F,F,F,F,T,T,T };
-    bool output2[8];
-    negateb(output2, a2);
-    assert_equal8(b2, output2);
+    str_to_bits8(a, "00001011");
+    str_to_bits8(c, "11110101");
+    negateb(output, a);
+    assert_eq8(c, output);
+    
+    str_to_bits8(a, "11111001");
+    str_to_bits8(c, "00000111");
+    negateb(output, a);
+    assert_eq8(c, output);
 }
 
 test_case(p2, subu) {
-    //bool a[8] = { T, T, F, T, F, F, F, F }; // 11
-    bool a[8] = { F,F,F,F,T,F,T,T };
-    //bool b[8] = { T, F, F, T, T, T, T, T }; // -7
-    bool b[8] = { T,T,T,T,T,F,F,T};
-    //bool d[8] = { F, T, F, F, T, F, F, F }; // 18
-    bool d[8] = { F,F,F,T,F,F,T,F };
+    bool a[8], b[8], c[8];
     bool output[8];
+    
+    to_bits8(a, 11);
+    to_bits8(b, 7);
+    to_bits8(c, 4);
     subu(output, a, b);
-    assert_equal8(d, output);
+    assert_eq8(c, output);
 }
 
 test_case(p2, equal) {
-    //bool a[8] = { T, T, F, T, F, F, F, F }; // 11
-    bool a[8] = { F,F,F,F,T,F,T,T };
-    //bool b[8] = { T, F, F, T, T, T, T, T }; // -7
-    bool b[8] = { T,T,T,T,T,F,F,T};
+    bool a[8], b[8];
     
+    to_bits8(a, 11);
+    to_bits8(b, 7);
     assert_true(equal(a, a));
     assert_true(equal(b, b));
     assert_false(equal(a, b));
@@ -199,72 +163,65 @@ test_case(p2, equal) {
 }
 
 test_case(p2, lessthan) {
-    //bool a[8] = { T, T, F, T, F, F, F, F }; // 11
-    bool a[8] = { F,F,F,F,T,F,T,T };
-    //bool b[8] = { F, F, F, T, T, F, F, F }; // 24
-    bool b[8] = { F, F, F, T, T, F, F, F };
+    bool a[8], b[8];
     
+    to_bits8(a, 11);
+    to_bits8(b, 24);
     assert_true(lessthan(a, b));
     assert_false(lessthan(b, a));
     assert_false(lessthan(a, a));
 }
 
 test_case(p2, greaterthan) {
-    //bool a[8] = { T, T, F, T, F, F, F, F }; // 11
-    bool a[8] = { F,F,F,F,T,F,T,T };
-    //bool b[8] = { F, F, F, T, T, F, F, F }; // 24
-    bool b[8] = { F, F, F, T, T, F, F, F };
+    bool a[8], b[8];
     
+    to_bits8(a, 11);
+    to_bits8(b, 24);
     assert_false(greaterthan(a, b));
     assert_true(greaterthan(b, a));
     assert_false(greaterthan(a, a));
 }
 
 test_case(p2, and8) {
-    //bool a[8] = { T, T, F, T, F, F, F, F };
-    bool a[8] = { F,F,F,F,T,F,T,T };
-    //bool b[8] = { F, F, F, T, T, F, F, F };
-    bool b[8] = { F, F, F, T, T, F, F, F };
-    //bool result[8] = { F, F, F, T, F, F, F, F };
-    bool result[8] = { F,F,F,F,T,F,F,F};
-    
+    bool a[8], b[8], c[8];
     bool output[8];
+    
+    str_to_bits8(a, "00001011");
+    str_to_bits8(b, "00011000");
+    str_to_bits8(c, "00001000");
     and8(output, a, b);
-    assert_equal8(result, output);
+    assert_eq8(c, output);
 }
 
 test_case(p2, or8) {
-    //bool a[8] = { T, T, F, T, F, F, F, F };
-    bool a[8] = { F,F,F,F,T,F,T,T };
-    bool b[8] = { F, F, F, T, T, F, F, F };
-    //bool result[8] = { T, T, F, T, T, F, F, F };
-    bool result[8] = { F,F,F,T,T,F,T,T};
-    
+    bool a[8], b[8], c[8];
     bool output[8];
+    
+    str_to_bits8(a, "00001011");
+    str_to_bits8(b, "00011000");
+    str_to_bits8(c, "00011011");
     or8(output, a, b);
-    assert_equal8(result, output);
+    assert_eq8(c, output);
 }
 
 test_case(p2, shiftLeft) {
-    //bool a[8] = { T, T, F, T, F, F, F, F };
-    bool a[8] = { F,F,F,F,T,F,T,T };
-    //bool b[8] = { F, T, T, F, T, F, F, F };
-    bool b[8] = { F,F,F,T,F,T,T,F};
-    
+    bool a[8], c[8];
     bool output[8];
+    
+    str_to_bits8(a, "00001011");
+    str_to_bits8(c, "00010110");
     shiftLeft(output, a);
-    assert_equal8(b, output);
+    assert_eq8(c, output);
 }
 
 test_case(p2, shiftRight) {
-    //bool a[8] = { T, T, F, T, F, F, F, F };
-    bool a[8] = { F,F,F,F,T,F,T,T };
-    //bool b[8] = { T, F, T, F, F, F, F, F };
-    bool b[8] = { F,F,F,F,F,T,F,T};
-    
+    bool a[8], c[8];
     bool output[8];
+    
+    str_to_bits8(a, "00001011");
+    str_to_bits8(c, "00000101");
     shiftRight(output, a);
-    assert_equal8(b, output);
+    assert_eq8(c, output);
 }
 
 int main(int argc, char** argv) {
