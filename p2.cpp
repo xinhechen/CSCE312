@@ -1,3 +1,10 @@
+//
+//  p2.cpp
+//  part12
+//
+//  Created by Xinhe Chen on 6/8/14.
+//  Copyright (c) 2014 Xinhe Chen. All rights reserved.
+//
 #include "basic_functions.h"
 #include "p2.h"
 #include "p1.h"
@@ -15,21 +22,36 @@ bool* mux(bool* output, bool operation, bool input1[8], bool input2[8])
 }
 bool* addu(bool* output, bool input1[8], bool input2[8])
 {
-    output[7]=Sum(input1[7],input2[7]);
-    bool carryout=CarryOut(input1[7],input2[7],'0');
-    output[6]=Sum(input1[6],input2[6],carryout);
-    carryout=CarryOut(input1[6],input2[6],carryout);
-    output[5]=Sum(input1[5],input2[5],carryout);
-    carryout=CarryOut(input1[5],input2[5],carryout);
-    output[4]=Sum(input1[4],input2[4],carryout);
-    carryout=CarryOut(input1[4],input2[4],carryout);
-    output[3]=Sum(input1[3],input2[3],carryout);
-    carryout=CarryOut(input1[3],input2[3],carryout);
-    output[2]=Sum(input1[2],input2[2],carryout);
-    carryout=CarryOut(input1[2],input2[2],carryout);
+    output[0]=0;
+    output[1]=0;
+    output[2]=0;
+    output[3]=0;
+    output[4]=0;
+    output[5]=0;
+    output[6]=0;
+    output[7]=0;
+    output[0]=Sum(input1[0],input2[0]);
+    bool carryout=CarryOut(input1[0],input2[0],false);
+   
     output[1]=Sum(input1[1],input2[1],carryout);
     carryout=CarryOut(input1[1],input2[1],carryout);
-    output[0]=Sum(input1[0],input2[0],carryout);
+    
+    output[2]=Sum(input1[2],input2[2],carryout);
+    carryout=CarryOut(input1[2],input2[2],carryout);
+   
+    output[3]=Sum(input1[3],input2[3],carryout);
+    carryout=CarryOut(input1[3],input2[3],carryout);
+   
+    output[4]=Sum(input1[4],input2[4],carryout);
+    carryout=CarryOut(input1[4],input2[4],carryout);
+    
+    output[5]=Sum(input1[5],input2[5],carryout);
+    carryout=CarryOut(input1[5],input2[5],carryout);
+    
+    output[6]=Sum(input1[6],input2[6],carryout);
+    carryout=CarryOut(input1[6],input2[6],carryout);
+   
+    output[7]=Sum(input1[7],input2[7],carryout);
     return output;
 }
 bool* negateb(bool* output, bool input[8])
@@ -44,14 +66,14 @@ bool* negateb(bool* output, bool input[8])
     temp[6]=Not(input[6]);
     temp[7]=Not(input[7]);
     bool one[8];
-    one[0]='0';
-    one[1]='0';
-    one[2]='0';
-    one[3]='0';
-    one[4]='0';
-    one[5]='0';
-    one[6]='0';
-    one[7]='1';
+    one[0]=true;
+    one[1]=false;
+    one[2]=false;
+    one[3]=false;
+    one[4]=false;
+    one[5]=false;
+    one[6]=false;
+    one[7]=false;
     addu(output,temp,one);
     return output;
 }
@@ -79,47 +101,53 @@ bool lessthan(bool input1[8], bool input2[8]) //(return 0 if false)
 {
     bool* sub=new bool[8];
     subu(sub,input1,input2);
-    bool sign=sub[0];
+    bool sign=sub[7];
     return And(sign,Not(equal(input1,input2)));
 }
 bool greaterthan(bool input1[8], bool input2[8]) //(return 0 if false)
 {
     bool* sub=new bool[8];
     subu(sub,input1,input2);
-    bool opposite=Not(sub[0]);
+    bool opposite=Not(sub[7]);
     return And(opposite,Not(equal(input1,input2)));
 }
-bool* equal(bool* output, bool input1[8], bool input2[8])// (return 11111111 if two values are the same)
+bool* equal(bool* output, bool input1[8], bool input2[8])// (return 00000001 if two values are the same)
 {
-    bool* sub=new bool[8];
-    subu(sub,input1,input2);
-    negateb(output,sub);
+    bool e=equal(input1,input2);
+    output[0]=e;
+    output[1]=0;
+    output[2]=0;
+    output[3]=0;
+    output[4]=0;
+    output[5]=0;
+    output[6]=0;
+    output[7]=0;
     return output;
 }
 bool* lessthan(bool* output, bool input1[8], bool input2[8]) //(return 00000000 if false)
 {
     bool o=lessthan(input1,input2);
     output[0]=o;
-    output[1]=o;
-    output[2]=o;
-    output[3]=o;
-    output[4]=o;
-    output[5]=o;
-    output[6]=o;
-    output[7]=o;
+    output[1]=0;
+    output[2]=0;
+    output[3]=0;
+    output[4]=0;
+    output[5]=0;
+    output[6]=0;
+    output[7]=0;
     return output;
 }
 bool* greaterthan(bool* output, bool input1[8], bool input2[8])//(return 00000000 if false)
 {
     bool o=greaterthan(input1,input2);
     output[0]=o;
-    output[1]=o;
-    output[2]=o;
-    output[3]=o;
-    output[4]=o;
-    output[5]=o;
-    output[6]=o;
-    output[7]=o;
+    output[1]=0;
+    output[2]=0;
+    output[3]=0;
+    output[4]=0;
+    output[5]=0;
+    output[6]=0;
+    output[7]=0;
     return output;
     
 }
@@ -149,18 +177,6 @@ bool* or8(bool* output, bool input1[8], bool input2[8])//(bitwise or)
 }
 bool* shiftLeft(bool* output, bool input[8])
 {
-    output[0]=input[1];
-    output[1]=input[2];
-    output[2]=input[3];
-    output[3]=input[4];
-    output[4]=input[5];
-    output[5]=input[6];
-    output[6]=input[7];
-    output[7]=false;
-    return output;
-}
-bool* shiftRight(bool* output, bool input[8])
-{
     output[0]=false;
     output[1]=input[0];
     output[2]=input[1];
@@ -169,5 +185,17 @@ bool* shiftRight(bool* output, bool input[8])
     output[5]=input[4];
     output[6]=input[5];
     output[7]=input[6];
+    return output;
+}
+bool* shiftRight(bool* output, bool input[8])
+{
+    output[0]=input[1];
+    output[1]=input[2];
+    output[2]=input[3];
+    output[3]=input[4];
+    output[4]=input[5];
+    output[5]=input[6];
+    output[6]=input[7];
+    output[7]=false;
     return output;
 }
