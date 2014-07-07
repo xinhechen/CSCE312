@@ -6,6 +6,7 @@
 #ifndef SIMPLE_TEST_H
 #define SIMPLE_TEST_H
 
+#include <vector>
 #include <iostream>
 #include "test_utils.h"
 
@@ -73,10 +74,43 @@ std::cout << "    Expected an exception!" << std::endl; \
 } \
 while (false);
 
-#define test_case(suite_name, case_name) \
-void test_case_ ## suite_name ## _ ## case_name()
 
-#define run_test_case(suite_name, case_name) \
-test_case_ ## suite_name ## _ ## case_name()
+
+class TestCase {
+public:
+    TestCase(const char* name, void (*fn)()): _name(name), _fn(fn) {}
+    const char* name() { return _name; }
+    void run() { _fn(); }
+    
+private:
+    const char* _name;
+    void (*_fn)();
+};
+
+class TestCaseRegisterer {
+public:
+    TestCaseRegisterer(const char* name, void (*fn)()) {
+        TestCase t(name, fn);
+        test_cases.push_back(t);
+    }
+    
+    static void run_test_cases() {
+        for (int i = 0; i < test_cases.size(); ++i) {
+            std::cout << "Running case: " << test_cases[i].name() << "...";
+            test_cases[i].run();
+            std::cout << " Done." << std::endl;
+        }
+    }
+    
+private:
+    static std::vector<TestCase> test_cases;
+};
+
+#define test_case(suite_name, case_name) \
+void tc_ ## suite_name ## _ ## case_name(); \
+TestCaseRegisterer tcr_ ## suite_name ## _ ## case_name( \
+#suite_name "_" #case_name, \
+tc_ ## suite_name ## _ ## case_name); \
+void tc_ ## suite_name ## _ ## case_name()
 
 #endif // SIMPLE_TEST_H
