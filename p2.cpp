@@ -30,27 +30,33 @@ bool* addu(bool* output, bool input1[8], bool input2[8])
     output[5]=0;
     output[6]=0;
     output[7]=0;
-    output[0]=Sum(input1[0],input2[0]);
     bool carryout=CarryOut(input1[0],input2[0],false);
-   
+    output[0]=Sum(input1[0],input2[0]);
+    
+    bool next_carryout=CarryOut(input1[1],input2[1],carryout);
     output[1]=Sum(input1[1],input2[1],carryout);
-    carryout=CarryOut(input1[1],input2[1],carryout);
+    carryout = next_carryout;
     
+    next_carryout=CarryOut(input1[2],input2[2],carryout);
     output[2]=Sum(input1[2],input2[2],carryout);
-    carryout=CarryOut(input1[2],input2[2],carryout);
-   
+    carryout = next_carryout;
+    
+    next_carryout=CarryOut(input1[3],input2[3],carryout);
     output[3]=Sum(input1[3],input2[3],carryout);
-    carryout=CarryOut(input1[3],input2[3],carryout);
-   
+    carryout = next_carryout;
+    
+    next_carryout=CarryOut(input1[4],input2[4],carryout);
     output[4]=Sum(input1[4],input2[4],carryout);
-    carryout=CarryOut(input1[4],input2[4],carryout);
+    carryout = next_carryout;
     
+    next_carryout=CarryOut(input1[5],input2[5],carryout);
     output[5]=Sum(input1[5],input2[5],carryout);
-    carryout=CarryOut(input1[5],input2[5],carryout);
+    carryout = next_carryout;
     
+    next_carryout=CarryOut(input1[6],input2[6],carryout);
     output[6]=Sum(input1[6],input2[6],carryout);
-    carryout=CarryOut(input1[6],input2[6],carryout);
-   
+    carryout = next_carryout;
+    
     output[7]=Sum(input1[7],input2[7],carryout);
     return output;
 }
@@ -177,14 +183,14 @@ bool* or8(bool* output, bool input1[8], bool input2[8])//(bitwise or)
 }
 bool* shiftLeft(bool* output, bool input[8])
 {
-    output[0]=false;
-    output[1]=input[0];
-    output[2]=input[1];
-    output[3]=input[2];
-    output[4]=input[3];
-    output[5]=input[4];
-    output[6]=input[5];
     output[7]=input[6];
+    output[6]=input[5];
+    output[5]=input[4];
+    output[4]=input[3];
+    output[3]=input[2];
+    output[2]=input[1];
+    output[1]=input[0];
+    output[0]=false;
     return output;
 }
 bool* shiftRight(bool* output, bool input[8])
