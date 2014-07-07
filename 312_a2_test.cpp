@@ -1,3 +1,4 @@
+
 // 312 Assignment 2 Test Program.
 // TA: Yin Qu (me.yin.qu@gmail.com)
 //
@@ -81,57 +82,51 @@ test_case(p3, alu_neg) {
 }
 
 test_case(p3, alu_eq) {
-    bool op[8], a[8], b[8], c[8];
+    bool op[8], a[8], b[8];
     bool output[8];
     
     to_bits8(op, 3);
     to_bits8(a, 19);
     to_bits8(b, 19);
-    to_bits8(c, 1); // expected
     alu(op, output, a, b);
-    assert_eq8(c, output);
+    assert_true(output[0]); // test only the least bit
     
     to_bits8(a, 19);
     to_bits8(b, 83);
-    to_bits8(c, 0); // expected
     alu(op, output, a, b);
-    assert_eq8(c, output);
+    assert_false(output[0]);
 }
 
 test_case(p3, alu_lt) {
-    bool op[8], a[8], b[8], c[8];
+    bool op[8], a[8], b[8];
     bool output[8];
     
     to_bits8(op, 4);
     to_bits8(a, 127);
     to_bits8(b, 128);
-    to_bits8(c, 1); // expected
     alu(op, output, a, b);
-    assert_eq8(c, output);
+    assert_true(output[0]);
     
     to_bits8(a, 128);
     to_bits8(b, 127);
-    to_bits8(c, 0); // expected
     alu(op, output, a, b);
-    assert_eq8(c, output);
+    assert_false(output[0]);
 }
 
 test_case(p3, alu_gt) {
-    bool op[8], a[8], b[8], c[8];
+    bool op[8], a[8], b[8];
     bool output[8];
     
     to_bits8(op, 5);
     to_bits8(a, 128);
     to_bits8(b, 127);
-    to_bits8(c, 1); // expected
     alu(op, output, a, b);
-    assert_eq8(c, output);
+    assert_true(output[0]);
     
     to_bits8(a, 127);
     to_bits8(b, 128);
-    to_bits8(c, 0); // expected
     alu(op, output, a, b);
-    assert_eq8(c, output);
+    assert_false(output[0]);
 }
 
 test_case(p3, alu_and) {
@@ -165,7 +160,7 @@ test_case(p3, alu_sll) {
     to_bits8(op, 8);
     str_to_bits8(a, "00010011");
     str_to_bits8(b, "00000010");
-    str_to_bits8(c, "00100110"); // expected
+    str_to_bits8(c, "01001100"); // expected
     alu(op, output, a, b);
     assert_eq8(c, output);
 }
@@ -177,7 +172,7 @@ test_case(p3, alu_srl) {
     to_bits8(op, 9);
     str_to_bits8(a, "00110011");
     str_to_bits8(b, "00000010");
-    str_to_bits8(c, "00011001"); // expected
+    str_to_bits8(c, "00001100"); // expected
     alu(op, output, a, b);
     assert_eq8(c, output);
 }
@@ -269,35 +264,14 @@ test_case(p5, alu_div) {
     to_bits8(op, 13);
     to_bits8(a, -113);
     to_bits8(b, 47);
-    to_bits16(c, ((-19) << 8) + (-2)); // quotient = -2, remainder = -19
+    to_bits16(c, ((-19) << 8) + (0xff & -2)); // quotient = -2, remainder = -19
     alu(op, output, a, b);
     assert_eq16(c, output);
 }
 
-
-
 int main(int argc, char** argv) {
-    
-    
-    
-    run_test_case(p3, alu_addu);
-    run_test_case(p3, alu_subu);
-    run_test_case(p3, alu_neg);
-    run_test_case(p3, alu_eq);
-    run_test_case(p3, alu_lt);
-    run_test_case(p3, alu_gt);
-    run_test_case(p3, alu_and);
-    run_test_case(p3, alu_or);
-    run_test_case(p3, alu_sll);
-    run_test_case(p3, alu_srl);
-    run_test_case(p4, alu_add);
-    run_test_case(p4, alu_sub);
-    run_test_case(p5, alu_multu);
-    run_test_case(p5, alu_mult);
-    run_test_case(p5, alu_divu);
-    run_test_case(p5, alu_div);
-    
-    
+    TestCaseRegisterer::run_test_cases();
     std::cout << "Done." << std::endl;
     return 0;
 }
+
