@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "basic_functions.h"
 #include "p1.h"
