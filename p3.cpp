@@ -25,6 +25,7 @@
 #include "p3.h"
 #include "p4.h"
 #include "p5.h"
+#include "p6.h"
 bool* mux16(bool* output, bool operation, bool input1[16], bool input2[16])
 {
     output[0]=Mux(operation,input1[0],input2[0]);
@@ -47,7 +48,7 @@ bool* mux16(bool* output, bool operation, bool input1[16], bool input2[16])
 }
 bool* alu(bool op_code[8], bool* output, bool input1[8], bool input2[8])
 {
-
+    
     bool temp[8];
     temp[0]=0;
     temp[1]=0;
@@ -60,7 +61,7 @@ bool* alu(bool op_code[8], bool* output, bool input1[8], bool input2[8])
     bool overflow = false;
     bool* x=new bool[8];
     bool addfxn=equal(op_code,temp);
-   
+    
     try {
         add(x,input1,input2);
     } catch (...) {
@@ -79,7 +80,7 @@ bool* alu(bool op_code[8], bool* output, bool input1[8], bool input2[8])
             overflow = true;
     }
     mux(output,subfxn,x,output);  //SUB=1(00000001)
-
+    
     temp[0]=0;
     temp[1]=1;
     bool negfxn=equal(op_code,temp);
@@ -118,14 +119,19 @@ bool* alu(bool op_code[8], bool* output, bool input1[8], bool input2[8])
     temp[2]=0;
     temp[1]=0;
     temp[0]=0;
+    
     bool sllfxn=equal(op_code,temp);
     shiftLeft(x,input1);
-    mux(output,sllfxn,x,output); //SLL=8(00001000)
+    mux(output,sllfxn,x,output);
+    shiftLeft(x,x);
+    mux(output,sllfxn,x,output);//SLL=8(00001000)
     
     temp[0]=1;
     bool srlfxn=equal(op_code,temp);
     shiftRight(x,input1);
-    mux(output,srlfxn,x,output); //SRL=9(00001001)
+    mux(output,srlfxn,x,output);
+    shiftRight(x,x);
+    mux(output,srlfxn,x,output);//SRL=9(00001001)
     
     temp[0]=0;
     temp[1]=1;
@@ -149,7 +155,6 @@ bool* alu(bool op_code[8], bool* output, bool input1[8], bool input2[8])
     bool divfxn=equal(op_code,temp);
     div(x,input1,input2);
     mux16(output,divfxn,x,output); //DIVU=13(00001101)
-   
     
     temp[4]=1;
     temp[3]=0;
@@ -159,16 +164,16 @@ bool* alu(bool op_code[8], bool* output, bool input1[8], bool input2[8])
     bool addufxn=equal(op_code,temp);
     addu(x,input1,input2);
     mux(output,addufxn,x,output); //ADDU=16(00010000)
-  
+    
     temp[0]=1;
     bool subufxn=equal(op_code,temp);
     subu(x,input1,input2);
     mux(output,subufxn,x,output); //SUBU=17(00010001)
     
-
+    
     if (overflow)
         throw "overflow";
-   
+    
     return output;
     
     
