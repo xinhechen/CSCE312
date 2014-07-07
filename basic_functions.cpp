@@ -57,4 +57,3 @@ void printValueInDecimal(bool byte[8])
     int value=1*byte[0]+2*byte[1]+4*byte[2]+8*byte[3]+16*byte[4]+32*byte[5]+64*byte[6]+128*byte[7];
     cout<<"the value in decimal is "<<value<<"\n";
 }
-
