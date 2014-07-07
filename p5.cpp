@@ -81,7 +81,7 @@ bool* add16(bool* output, bool input1[16], bool input2[16])
     next_carryout=CarryOut(input1[4],input2[4],carryout);
     output[4]=Sum(input1[4],input2[4],carryout);
     carryout = next_carryout;
-   
+    
     next_carryout=CarryOut(input1[5],input2[5],carryout);
     output[5]=Sum(input1[5],input2[5],carryout);
     carryout = next_carryout;
@@ -105,11 +105,11 @@ bool* add16(bool* output, bool input1[16], bool input2[16])
     next_carryout=CarryOut(input1[10],input2[10],carryout);
     output[10]=Sum(input1[10],input2[10],carryout);
     carryout = next_carryout;
-   
+    
     next_carryout=CarryOut(input1[11],input2[11],carryout);
     output[11]=Sum(input1[11],input2[11],carryout);
     carryout = next_carryout;
-   
+    
     next_carryout=CarryOut(input1[12],input2[12],carryout);
     output[12]=Sum(input1[12],input2[12],carryout);
     carryout = next_carryout;
@@ -121,7 +121,7 @@ bool* add16(bool* output, bool input1[16], bool input2[16])
     next_carryout=CarryOut(input1[14],input2[14],carryout);
     output[14]=Sum(input1[14],input2[14],carryout);
     carryout = next_carryout;
-   
+    
     next_carryout=CarryOut(input1[15],input2[15],carryout);
     output[15]=Sum(input1[15],input2[15],carryout);
     
@@ -235,7 +235,7 @@ bool* multu(bool* output, bool input1[8], bool input2[8])
     b[0]=two[0];
     shiftLeft16(b, b);
     add16(output, a,b);
-  
+    
     
     temp[0]=input2[2];
     temp[1]=input2[2];
@@ -267,8 +267,8 @@ bool* multu(bool* output, bool input1[8], bool input2[8])
     shiftLeft16(a,a);
     shiftLeft16(a,a);
     add16(output,output,a);
-
-
+    
+    
     temp[0]=input2[3];
     temp[1]=input2[3];
     temp[2]=input2[3];
@@ -299,7 +299,7 @@ bool* multu(bool* output, bool input1[8], bool input2[8])
     shiftLeft16(a,a);
     shiftLeft16(a,a);
     add16(output,output,a);
- 
+    
     
     temp[0]=input2[4];
     temp[1]=input2[4];
@@ -974,7 +974,7 @@ bool* div(bool* output, bool input1[8], bool input2[8])
     remainder[5]=output[13];
     remainder[6]=output[14];
     remainder[7]=output[15];
-    printValue(remainder);
+    
     negateb(remainder,remainder);
     
     neg16[0]=quotient[0];
