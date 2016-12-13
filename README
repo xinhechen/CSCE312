@@ -1,3 +1,5 @@
+**This program no longer works on the newest C++ (version 14)**
+
 CSCE312 Computer Organization
 Summer 2014
 This program simulates building up machine language to assembly language
